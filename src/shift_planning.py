@@ -112,7 +112,7 @@ class ShiftPlanning(object):
         
         return (None,"User hasn't been authenticated")
     
-    def get_raw_resopsne(self):
+    def get_raw_response(self):
         if self.response:
             return self.response
         return (None,"No raw response available")
@@ -315,14 +315,13 @@ class ShiftPlanning(object):
         self.perform_request(params)
         
     
-    def get_scheduler_conflicts(self,time_period):
-        if time_period: return None
+    def get_scheduler_conflicts(self,time_period=None):
         params = {
             'module':'schedule.conflicts',
             'method' :'GET'
         }
         
-        params.update(time_period)
+        if time_period: params.update(time_period)
         self.perform_request(params)
         
     
@@ -558,11 +557,12 @@ class ShiftPlanning(object):
         }
         self.perform_request(params)
         
-    def get_employees(self):
+    def get_employees(self, details=''):
         params = {
             'module':'staff.employees',
             'method':'GET'
         }
+        params.update(details)
         self.perform_request(params)
         
         
@@ -623,6 +623,22 @@ class ShiftPlanning(object):
     def get_messages(self):
         params= {
             'module':'messaging.messages',
+            'method':'GET'
+        }
+        self.perform_request(params)
+
+    def get_timesheets(self, timesheet_details):
+        if not timesheet_details: return None
+        params= {
+            'module':'reports.timesheets',
+            'method':'GET'
+        }
+        params.update(timesheet_details)
+        self.perform_request(params)
+
+    def get_locations(self):
+        params= {
+            'module':'location.locations',
             'method':'GET'
         }
         self.perform_request(params)
